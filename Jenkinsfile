@@ -3,32 +3,32 @@ pipeline {
     stages{
         stage("Restore dependencies"){
             when {
-                anyOf {
-                    branch 'main'
+                expression {
+                    return env.GIT_BRANCH == 'origin/main'
                 }
             }
             steps{
-                bat 'dotnet restore'
+                bat "dotnet restore"
             }
         }
-        stage("Build the app"){
+        stage("Build the project"){
             when {
-                anyOf {
-                    branch 'main'
+                expression {
+                    return env.GIT_BRANCH == 'origin/main'
                 }
             }
             steps{
-                bat 'dotnet build --no-restore'
+                bat "dotnet build --no-restore"
             }
         }
         stage("Run the tests"){
             when {
-                anyOf {
-                    branch 'main'
+                expression {
+                    return env.GIT_BRANCH == 'origin/main'
                 }
             }
             steps{
-                bat 'dotnet test --no-build --verbosity normal'
+                bat "dotnet test --no-build --verbosity normal"
             }
         }
     }
